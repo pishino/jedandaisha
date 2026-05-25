@@ -1,6 +1,7 @@
 import { useRef, useEffect, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
 import { useAudio } from './hooks/useAudio'
 import Curtain from './components/Curtain'
@@ -11,7 +12,7 @@ import Ceremony from './sections/Ceremony'
 import Reception from './sections/Reception'
 import RSVP from './sections/RSVP'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 ScrollTrigger.defaults({
   start: 'top center',
@@ -110,11 +111,22 @@ export default function App() {
         if (e.target.closest('a, button')) return
         const section = e.target.closest('.card-panel')
         if (!section) return
-        const next = section.nextElementSibling
-        if (next) {
-          const targetY = next.getBoundingClientRect().top + window.scrollY
-          window.scrollTo({ top: targetY, behavior: 'smooth' })
+
+        const clickY  = e.clientY
+        const body    = section.querySelector('.card-body')
+        const bodyTop = body ? body.getBoundingClientRect().top    : section.getBoundingClientRect().top + section.offsetHeight / 2
+        const bodyBot = body ? body.getBoundingClientRect().bottom : bodyTop
+
+        let target
+        if (clickY < bodyTop) {
+          target = section.previousElementSibling
+        } else if (clickY > bodyBot) {
+          target = section.nextElementSibling
         }
+        if (!target) return
+
+        const targetY = target.getBoundingClientRect().top + window.scrollY
+        gsap.to(window, { scrollTo: { y: targetY, autoKill: false }, duration: 1.1, ease: 'power3.inOut' })
       }}>
         <Families />
         <Names />

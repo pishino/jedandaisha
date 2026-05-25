@@ -249,6 +249,17 @@ body::after {
   z-index: 0; font-weight: 300;
 }
 
+/* ─── Mobile font scale-up ───────────────────────────────────── */
+@media (max-width: 480px) {
+  .t-display { font-size: clamp(2rem,    9vw,   3.2rem); }
+  .t-family  { font-size: clamp(1.65rem, 7.2vw, 2.4rem); }
+  .t-script  { font-size: clamp(1.65rem, 7.2vw, 2.4rem); }
+  .t-label   { font-size: clamp(1.2rem,  4.6vw, 1.6rem); }
+  .t-body    { font-size: clamp(1.2rem,  4.2vw, 1.55rem); }
+  .t-detail  { font-size: clamp(1.2rem,  4.2vw, 1.55rem); }
+  .countdown { font-size: clamp(1.1rem,  3.8vw, 1.55rem); }
+}
+
 /* ─── Reduced motion ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .scroll-chevron { animation: none !important; transition: none !important; }
