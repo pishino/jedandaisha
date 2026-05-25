@@ -1,0 +1,256 @@
+/* ─── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --bg:       #bcc3ce;
+  --burgundy: #6b1a24;
+  --maroon:   #4a0f1a;
+  --body-ink: #5c1a24;
+  --gold:     #8a7340;
+  --cream:    #f2ede6;
+  --font:     'Cormorant Garamond', serif;
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; }
+
+/* ─── Base ───────────────────────────────────────────────────── */
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--maroon);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+#root { width: 100%; position: relative; }
+
+/* ─── Parchment grain ────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 9999; pointer-events: none;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 9998; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(20,8,8,0.22) 100%);
+}
+
+/* ─── Flower overlay (z-index 3, above border + content) ────────── */
+.card-frame__flower {
+  position: absolute;
+  width: clamp(180px, 44vw, 360px);
+  height: auto;
+  will-change: transform;
+}
+.card-frame__flower--tl {
+  top: -6%;
+  left: -6%;
+  mix-blend-mode: screen;
+  filter: brightness(0.88) saturate(1.25);
+  transform-origin: top left;
+}
+.card-frame__flower--br {
+  bottom: -6%;
+  right: -6%;
+  mix-blend-mode: multiply;
+  transform-origin: bottom right;
+}
+
+/* ─── Card panel ─────────────────────────────────────────────── */
+.card-panel {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(36px, 6vh, 64px);
+  padding-bottom: clamp(36px, 6vh, 64px);
+  padding-left: clamp(28px, 5vw, 48px);
+  padding-right: clamp(28px, 5vw, 48px);
+  cursor: default;
+}
+
+/* Content column — scales with viewport, never too wide or narrow */
+.card-body {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: min(560px, 82vw);
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* ─── Typography — viewport-relative (vw) ────────────────────── */
+/* All sizes use vw so text scales uniformly with any screen size.
+   Ratio between largest (display) and smallest (detail) ≈ 2.2:1   */
+
+/* Level 1: Couple names + section headers (CEREMONY / RECEPTION / RSVP) */
+.t-display {
+  font-family: var(--font);
+  font-size: clamp(1.6rem, 6.5vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--maroon);
+  line-height: 1.05;
+}
+
+/* Level 2: Family names */
+.t-family {
+  font-family: var(--font);
+  font-size: clamp(1.2rem, 4.8vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  line-height: 1.1;
+}
+
+/* Level 3: Small labels */
+.t-label {
+  font-family: var(--font);
+  font-size: clamp(1rem, 3vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  line-height: 1.15;
+}
+
+/* Level 4: Italic body copy */
+.t-body {
+  font-family: var(--font);
+  font-size: clamp(1rem, 2.8vw, 1.55rem);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  color: var(--body-ink);
+  line-height: 1.45;
+}
+
+/* Level 5: Script "and" */
+.t-script {
+  font-family: var(--font);
+  font-size: clamp(1.2rem, 4.8vw, 2.4rem);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: var(--burgundy);
+  text-transform: none;
+}
+
+/* Level 6: Address / detail / phone */
+.t-detail {
+  font-family: var(--font);
+  font-size: clamp(0.95rem, 2.8vw, 1.55rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  line-height: 1.15;
+}
+
+/* ─── Spacing helpers ─────────────────────────────────────────── */
+.gap-xs { margin-top: 4px; }
+.gap-sm { margin-top: 8px; }
+.gap-md { margin-top: 14px; }
+.gap-lg { margin-top: 24px; }
+.gap-xl { margin-top: 36px; }
+
+/* ─── "and" flanked row ───────────────────────────────────────── */
+.and-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+/* ─── RSVP grid ───────────────────────────────────────────────── */
+.rsvp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--burgundy);
+  border-left: 1px solid var(--burgundy);
+  margin-top: 20px;
+}
+.rsvp-cell {
+  border-right: 1px solid var(--burgundy);
+  border-bottom: 1px solid var(--burgundy);
+  padding: 14px 8px;
+}
+.rsvp-cell a {
+  color: var(--burgundy);
+  text-decoration: none;
+  display: block;
+  margin-top: 4px;
+}
+@media (max-width: 480px) {
+  .rsvp-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── Countdown ───────────────────────────────────────────────── */
+.countdown {
+  font-family: var(--font);
+  font-size: clamp(0.95rem, 2.8vw, 1.55rem);
+  letter-spacing: 0.14em;
+  color: var(--burgundy);
+  font-weight: 400;
+  font-style: italic;
+  display: flex; gap: 6px; align-items: center; justify-content: center;
+  margin-top: 10px;
+}
+
+/* ─── Mute toggle ─────────────────────────────────────────────── */
+.mute-toggle {
+  position: fixed; top: 18px; right: 18px;
+  z-index: 10000;
+  background: rgba(188,195,206,0.85);
+  border: 1px solid var(--burgundy);
+  border-radius: 50%;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.4s, background 0.2s;
+  backdrop-filter: blur(4px);
+}
+.mute-toggle.visible { opacity: 1; }
+
+/* ─── Section ornament — pinned at section bottom as divider ─── */
+.section-ornament {
+  position: absolute;
+  bottom: clamp(14px, 3vh, 30px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(160px, 40vw, 240px);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* ─── Monogram watermark ──────────────────────────────────────── */
+.monogram-bg {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font);
+  font-size: clamp(7rem, 28vw, 16rem);
+  letter-spacing: 0.1em;
+  color: var(--maroon);
+  opacity: 0.05;
+  pointer-events: none; user-select: none;
+  z-index: 0; font-weight: 300;
+}
+
+/* ─── Reduced motion ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-chevron { animation: none !important; transition: none !important; }
+  .card-frame__flower { transition: none !important; }
+}
